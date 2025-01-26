@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calcul aléatoire</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+
+            :root {
+
+      			      /* Variables à modifier */
+
+      			--font: arial;
+                  --vae: #fce08d;
+                  --vat: #E55035;
+
+
+                       /* Variables à pas modifier */
+
+                  --clin: 1;
+                  --h3-font-size: calc(1 - var(--clin));
+
+      			}
+
+            .graph-container {
+                  border-radius: 10px;
+                  overflow: hidden;
+                  width: 700px;
+                  height: 410px;
+                  background-color: var(--vae);
+                  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+      			margin-left: 50px;
+              }
+      		.settings {
+                  border-radius: 10px;
+                  overflow: hidden;
+                  width: 300px;
+                  height: 410px;
+                  background-color: var(--vae);
+                  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      			margin-left: 100px;
+              }
+
+              .graph-container #graph {
+                  opacity: var(--clin);
+                  width: calc(var(--clin) * 800px);
+                  height: calc(var(--clin) * 410px);
+              }
+
+              .sum {
+                  color: var(--vae);
+              }
+
+              .random-number {
+                  color: var(--vae);
+              }
+
+              h1 {
+                  color: var(--vae);
+                  font-size: 4em;
+              }
+      		h4 {
+                  color: var(--vat);
+                  font-size: 20px;
+              }
+
+
+
+      h3 {
+        color: var(--vat);
+        font-size: calc(var(--h3-font-size) * 40px);
+      }
+
+
+              body {
+                  background-position: center;
+                  background-color: var(--vat);
+                  color: var(--vae);
+                  font-family: var(--font);
+      		    margin: 0;
+              }
+
+              button {
+                  padding: 0.1em 0.25em;
+                  width: 13em;
+                  height: 4.2em;
+                  background-color: var(--vae);
+                  border: 0.08em solid var(--vae);
+         		    border-radius: 10px;
+                  font-size: 12px;
+                  cursor: pointer;
+              }
+
+              button span {
+                  position: relative;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  bottom: 0.4em;
+                  width: 8.25em;
+                  height: 2.5em;
+                  background-color: var(--vae);
+                  border-radius: 10px;
+                  font-size: 1.5em;
+                  color: var(--vat);
+                  border: 0.08em solid var(--vat);
+                  box-shadow: 0 0.4em 0.1em 0.019em var(--vat);
+              }
+
+              button span:hover {
+                  transition: all 0.5s;
+                  transform: translate(0, 0.4em);
+                  box-shadow: 0 0 0 0 var(--vat);
+              }
+
+              button span:not(hover) {
+                  transition: all 1s;
+              }
+
+              .container {
+                  display: flex;
+                  align-items: center;
+                  width: 1200px;
+                  height: 410px;
+              }
+
+
+
+
+
+
+
+      		.radio-input input {
+        display: none;
+      }
+
+      .radio-input {
+        --container_width: 250px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        border-radius: 10px;
+        background-color: var(--vae);
+        color: var(--vat);
+        width: var(--container_width);
+        overflow: hidden;
+        border: 1px solid var(--vat);
+        box-shadow: 0 0.4em 0.1em 0.019em var(--vat);
+      }
+
+      .radio-input label {
+          width: 100%;
+          padding: 10px;
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1;
+          font-weight: 600;
+          letter-spacing: -1px;
+          font-size: 14px;
+      }
+
+      .selection {
+            display: none;
+          position: absolute;
+          height: 100%;
+          width: calc(var(--container_width) / 4);
+          z-index: 0;
+          left: 0;
+          top: 0;
+          transition: .15s ease;
+          background-color: var(--vae);
+      }
+
+      .radio-input label:has(input:checked) {
+        color: var(--vae);
+      }
+
+      .radio-input label:has(input:checked) ~ .selection {
+        background-color: var(--vat);
+        display: inline-block;
+      }
+
+      .radio-input label:nth-child(1):has(input:checked) ~ .selection {
+        transform: translateX(calc(var(--container_width) * 0/4));
+      }
+
+      .radio-input label:nth-child(2):has(input:checked) ~ .selection {
+        transform: translateX(calc(var(--container_width) * 1/4));
+      }
+
+      .radio-input label:nth-child(3):has(input:checked) ~ .selection {
+        transform: translateX(calc(var(--container_width) * 2/4));
+      }
+      .radio-input label:nth-child(4):has(input:checked) ~ .selection {
+        transform: translateX(calc(var(--container_width) * 3/4));
+      }
+
+
+      header {
+                  background-color: var(--vae);
+                  color: var(--vae);
+                  padding: 20px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+              }
+
+              header h1 {
+                  margin: 0;
+                  font-size: 1.5em;
+                  color: var(--vat);
+              }
+
+              nav ul {
+                  list-style: none;
+                  margin: 0;
+                  padding: 0;
+                  display: flex;
+              }
+
+              nav ul li {
+                  margin-left: 20px;
+              }
+
+              nav ul li a {
+                  text-decoration: none;
+                  color: var(--vat);
+                  font-size: 1em;
+              }
+
+              nav ul li a:hover {
+                  text-decoration: underline;
+              }
+			   .page {
+            display: none;
+            padding: 2em;
+        }
+        .page.active {
+            display: block;
+        }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1><typing-animation text="Graphrun" class="text-4xl font-bold text-red"></typing-animation></h1>
+	  
+	  
+	  
+      <nav>
+        <ul>
+          <li><a href="#" onclick="showPage('Home')">Home</a></li>
+          <li><a href="#" onclick="showPage('Game')">Game</a></li>
+          <li><a href="#" onclick="showPage('About')">About</a></li>
+          <li><a href="#" onclick="showPage('Contact')">Contact</a></li>
+        </ul>
+      </nav>
+	  
+	  
+    </header>
+	
+
+
+    <center>
+	<div id="Home" class="page active">
+      <h1><typing-animation text="Welcome in Graphrun" class="text-4xl font-bold text-red"></typing-animation></h1>
+	  <p>blablabla</p>
+     </div>
+
+<div id="Game" class="page">
+      <br />
+      <p>
+        Graphrun is a betting game based on a graph. We bet €100 if we win we
+        get €500, it's as simple as that!
+      </p>
+
+      <br />
+      <div class="container">
+        <div class="graph-container">
+          <h3 id="valeur"></h3>
+          <div id="graph"></div>
+        </div>
+        <br />
+        <div class="settings">
+          <h4>Settings</h4>
+          <br />
+          <button id="start-button" onclick="boucle()">
+            <span>Start</span>
+          </button>
+          <br />
+          <br />
+          <button id="reset-button" onclick="reinitialiserGraphique()">
+            <span>Réinitialiser</span>
+          </button>
+
+          <br />
+          <br />
+          <div class="radio-input">
+            <label>
+              <input type="radio" id="value-1" name="value-radio" value="1" />
+              <span>Red</span>
+            </label>
+            <label>
+              <input type="radio" id="value-2" name="value-radio" value="2" />
+              <span>Purple</span>
+            </label>
+            <label>
+              <input type="radio" id="value-3" name="value-radio" value="3" />
+              <span>Green</span>
+            </label>
+            <label>
+              <input type="radio" id="value-4" name="value-radio" value="4" />
+              <span>Orange</span>
+            </label>
+            <span class="selection"></span>
+          </div>
+        </div>
+      </div>
+      <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    </div>
+    <div id="About" class="page">
+        <h2>Canard</h2>
+        <p>Les canards sont des oiseaux aquatiques de la famille des anatidés.</p>
+    </div>
+    <div id="Contact" class="page">
+        <h2>Spaghetti</h2>
+        <p>Les spaghetti sont des pâtes italiennes de forme longue et fine.</p>
+    </div>
+
+
+
+
+
+   </center>
+   
+   
+   
+   
+   
+   <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        class TypingAnimation extends HTMLElement {
+            constructor() {
+                super();
+                this.attachShadow({ mode: 'open' });
+            }
+
+            connectedCallback() {
+                const text = this.getAttribute('text') || '';
+                const className = this.getAttribute('class') || '';
+                
+                const container = document.createElement('span');
+                container.setAttribute('class', className);
+                this.shadowRoot.appendChild(container);
+
+                let displayedText = '';
+                let index = 0;
+
+                const intervalId = setInterval(() => {
+                    displayedText += text[index];
+                    container.textContent = displayedText;
+                    index++;
+                    if (index === text.length) {
+                        clearInterval(intervalId);
+                    }
+                }, 150);
+            }
+        }
+
+        customElements.define('typing-animation', TypingAnimation);
+    </script>
+    <script>
+       document.addEventListener('DOMContentLoaded', function() {
+          var radioButtons = document.getElementsByName('value-radio');
+          elementP = document.getElementById("valeur");
+
+          // Fonction pour mettre à jour selectedValue lorsqu'un bouton est sélectionné
+          function updateSelectedValue() {
+              for (var i = 0; i < radioButtons.length; i++) {
+                  if (radioButtons[i].checked) {
+                      selectedValue = radioButtons[i].value;
+                      break;
+                  }
+              }
+          }
+
+          // Ajouter un écouteur d'événements à chaque bouton radio pour mettre à jour selectedValue
+          for (var i = 0; i < radioButtons.length; i++) {
+              radioButtons[i].addEventListener('change', updateSelectedValue);
+          }
+      });
+
+
+          var valeurJS = "";
+          var elementP = document.getElementById("valeur");
+          elementP.textContent = valeurJS;
+
+          var radioButtons = document.getElementsByName('value-radio');
+          var selectedValue = "";
+
+          var style = getComputedStyle(document.documentElement);
+          var vat = style.getPropertyValue('--vat');
+          var vae = style.getPropertyValue('--vae');
+
+          var xData = [];
+          var yData = [[], [], [], []];
+          var p1 = 25, p2 = 25, p3 = 25, p4 = 25;
+          var ff1, ff2, ff3, ff4;
+
+          Plotly.newPlot('graph', getData(), getLayout());
+
+      	   function Multiplicateur() {
+
+
+
+            var n1 = Math.random();
+            var n2 = Math.random();
+            var n3 = Math.random();
+            var n4 = Math.random();
+
+            var f1 = (n1+0.4) * p1;
+            var f2 = (n2+0.4) * p2;
+            var f3 = (n3+0.4) * p3;
+            var f4 = (n4+0.4) * p4;
+            var sommef = f1 + f2 + f3 + f4;
+
+            ff1 = f1 / sommef * 100;
+            ff2 = f2 / sommef * 100;
+            ff3 = f3 / sommef * 100;
+            ff4 = f4 / sommef * 100;
+            var sommeff = ff1 + ff2 + ff3 + ff4;
+
+            p1 = ff1;
+            p2 = ff2;
+            p3 = ff3;
+            p4 = ff4;
+
+            if (ff1 <= 0.2) {p1 = 0;}
+            if (ff2 <= 0.2) {p2 = 0;}
+            if (ff3 <= 0.2) {p3 = 0;}
+            if (ff4 <= 0.2) {p4 = 0;}
+
+
+            // Mettre à jour les données du graphique
+            xData.push(xData.length + 1); // Incrémentation de x
+            yData[0].push(parseFloat(ff1)); // Conversion en pourcentage et ajout à yData
+            yData[1].push(parseFloat(ff2));
+            yData[2].push(parseFloat(ff3));
+            yData[3].push(parseFloat(ff4));
+
+            // Mise à jour du graphique
+            Plotly.newPlot('graph', getData(), getLayout());
+            }
+
+          function getData() {
+            var traces = [];
+            var colors = ['red', 'purple', 'green', 'orange'];
+            var names = ['Red team', 'Purple team', 'Green team', 'Orange team'];
+
+            for (var i = 0; i < 4; i++) {
+              var trace = {
+                x: xData,
+                y: yData[i],
+                mode: 'lines',
+                name: names[i],
+                  line: {
+                      color: colors[i]
+                  }
+              };
+              traces.push(trace);
+          }
+          return traces;
+      }
+
+
+            // Fonction pour obtenir la mise en page du graphique
+            function getLayout() {
+            return {
+            title: {
+            text: 'who will win? place your bets!',
+            font: {
+            family: 'Arial, sans-serif',
+            size: 24,
+            color: vat
+            }
+            },
+            xaxis: {
+            title: {
+            text: 'Nombres aléatoires',
+            font: {
+            family: 'Arial, sans-serif',
+            size: 12,
+            color: vat
+            }
+            },
+            tickfont: {
+            family: 'Arial, sans-serif',
+            size: 12,
+            color: vat
+            }
+            },
+            yaxis: {
+            title: {
+            text: 'Valeurs',
+            font: {
+            family: 'Arial, sans-serif',
+            size: 12,
+            color: vat
+            }
+            },
+            tickfont: {
+            family: 'Arial, sans-serif',
+            size: 12,
+            color: vat
+            }
+            },
+            legend: {
+            font: {
+            family: 'Arial, sans-serif',
+            size: 12,
+            color: vat
+            }
+            },
+            width: 600, // Définir la largeur du graphique en pixels
+            height: 400, // Définir la hauteur du graphique en pixels
+            plot_bgcolor: vae, // Couleur de fond noire pour le graphique
+            paper_bgcolor: vae // Couleur de fond noire pour le papier (la zone autour du graphique)
+            };
+            }
+          function boucle() {
+      	    var startButton = document.getElementById('start-button');
+          var resetButton = document.getElementById('reset-button');
+
+          // Désactiver les boutons
+          startButton.disabled = true;
+          resetButton.disabled = true;
+          intervalID = setInterval(function() {
+              Multiplicateur();
+
+      		        if (ff1 === 100) {
+                  if (selectedValue === "1") {
+                      valeurJS = "WINNER";
+                  } else {
+                      valeurJS = "LOOSER";
+                  }
+              } else if (ff2 === 100) {
+                  if (selectedValue === "2") {
+                      valeurJS = "WINNER";
+                  } else {
+                      valeurJS = "LOOSER";
+                  }
+              } else if (ff3 === 100) {
+                  if (selectedValue === "3") {
+                      valeurJS = "WINNER";
+                  } else {
+                      valeurJS = "LOOSER";
+                  }
+              } else if (ff4 === 100) {
+                  if (selectedValue === "4") {
+                      valeurJS = "WINNER";
+                  } else {
+                      valeurJS = "LOOSER";
+                  }
+              }
+      		// Mettre à jour le texte de l'élément avec l'ID "valeur" lorsque la valeur de valeurJS change
+      function updateValeurJS() {
+          elementP.textContent = valeurJS;
+      }
+
+      // Appeler la fonction pour mettre à jour la valeur initiale
+      updateValeurJS();
+
+      		 console.log("selectedValue:", selectedValue);
+      		 console.log("valeurJS:", valeurJS);
+
+              // Vérifier si l'une des valeurs est égale à 100
+              if (ff1 === 100 || ff2 === 100 || ff3 === 100 || ff4 === 100) {
+                  // Si l'une des valeurs est égale à 100, arrêtez l'intervalle
+                  clearInterval(intervalID);
+
+
+
+              // Animation
+             for (var i = 0; i < 10; i++) {
+                      (function(index) {
+                          setTimeout(function() {
+                              document.documentElement.style.setProperty('--clin', '1');
+                              setTimeout(function() {
+                                  document.documentElement.style.setProperty('--clin', '0');
+                              }, 100); // Délai de 1 seconde pour la deuxième partie de l'animation
+                          }, index * 200); // Délai incrémenté à chaque itération
+                      })(i);
+                  }
+
+      			startButton.disabled = false;
+                  resetButton.disabled = false;
+              }
+
+
+          }, 1);
+
+      }
+
+
+      function resetRadioButtons() {
+          var radioButtons = document.getElementsByName('value-radio');
+          for (var i = 0; i < radioButtons.length; i++) {
+              radioButtons[i].checked = false;
+          }
+          // Réinitialiser la sélection visuelle
+          var selection = document.querySelector('.selection');
+          selection.style.transform = 'translateX(0)';
+          selection.style.display = 'none';
+          selection.style.backgroundColor = 'var(--vae)'; // Réinitialiser la couleur de fond
+      }
+
+
+
+      function reinitialiserGraphique() {
+          // Réinitialiser les données du graphique
+          xData = [];
+          yData = [[], [], [], []];
+
+          // Réinitialiser les paramètres des équipes
+          p1 = 25;
+          p2 = 25;
+          p3 = 25;
+          p4 = 25;
+
+          // Mettre à jour le graphique
+          Plotly.newPlot('graph', getData(), getLayout());
+
+      	document.documentElement.style.setProperty('--clin', '1');
+      	clearInterval(intervalID);
+      	valeurJS = "";
+      			// Mettre à jour le texte de l'élément avec l'ID "valeur" lorsque la valeur de valeurJS change
+
+      function updateValeurJS() {
+          elementP.textContent = valeurJS;
+      }
+
+      // Appeler la fonction pour mettre à jour la valeur initiale
+      updateValeurJS();
+
+      resetRadioButtons();
+      }
+	  
+	   function showPage(pageId) {
+            var pages = document.querySelectorAll('.page');
+            pages.forEach(function(page) {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+    </script>
+  </body>
+</html>
